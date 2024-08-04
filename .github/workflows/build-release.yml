@@ -22,6 +22,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Pack
-        run: dotnet pack "./src/HoYoLab/HoYoLab.csproj" --configuration Release -p:Version=${{ github.ref }}
+        run: dotnet pack "./src/HoYoLab/HoYoLab.csproj" --configuration Release -p:Version=${{ github.ref_name }}
       - name: Publish
-        run: dotnet nuget push "./src/HoYoLab/bin/Release/HoYoLab.${{ github.ref }}.nupkg" --source "github"
+        run: dotnet nuget push "./src/HoYoLab/bin/Release/HoYoLab.${{ github.ref_name }}.nupkg" --source "github"
