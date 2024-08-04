@@ -1,0 +1,118 @@
+﻿using System.Net;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization.Metadata;
+using HoYoLab.Requests;
+using HoYoLab.Results;
+
+namespace HoYoLab;
+
+public interface IHoYoLabClient
+{
+    Task SendAsync(IRequest request, CancellationToken cancellationToken = default);
+
+    Task<TResponse?> SendAsync<TResponse>(
+        IRequest<TResponse> request,
+        JsonTypeInfo<HoyoLabResult<TResponse>> jsonTypeInfo,
+        CancellationToken cancellationToken = default);
+}
+
+public class HoYoLabClient : IHoYoLabClient
+{
+    private readonly HoYoLabClientOptions _options;
+    private readonly HttpClient _httpClient;
+
+    public HoYoLabClient(HoYoLabClientOptions options, HttpClient httpClient)
+    {
+        _options = options;
+        _httpClient = httpClient;
+    }
+
+    public async Task SendAsync(IRequest request, CancellationToken cancellationToken = default)
+    {
+        using var httpResp = await _httpClient.SendAsync(CreateRequest(request), cancellationToken);
+        CheckResult(await CheckResponse(httpResp).Content.ReadFromJsonAsync(
+            JsonContext.DefaultContext.HoyoLabResult,
+            cancellationToken));
+    }
+
+    public async Task<TResponse?> SendAsync<TResponse>(
+        IRequest<TResponse> request,
+        JsonTypeInfo<HoyoLabResult<TResponse>> jsonTypeInfo,
+        CancellationToken cancellationToken = default)
+    {
+        using var httpResp = await _httpClient.SendAsync(CreateRequest(request), cancellationToken);
+        var result =
+            await CheckResponse(httpResp).Content.ReadFromJsonAsync(jsonTypeInfo, cancellationToken);
+        return CheckResult(result).Data;
+    }
+
+    private HttpRequestMessage CreateRequest(IRequest request)
+    {
+        var httpReq = new HttpRequestMessage
+        {
+            RequestUri = request.RequestUri(),
+            Method = request.Method
+        };
+        httpReq.Headers.Add("Cookie", _options.Cookie);
+        return httpReq;
+    }
+
+    private static HttpResponseMessage CheckResponse(HttpResponseMessage response)
+    {
+        if (response.StatusCode is not HttpStatusCode.OK)
+        {
+            throw new HoYoLabException(
+                $"Invalid status code {response.StatusCode}.");
+        }
+
+        return response;
+    }
+
+    private static TResult CheckResult<TResult>(TResult? result) where TResult : HoyoLabResult
+    {
+        if (result is null)
+        {
+            throw new HoYoLabException("Result is null.");
+        }
+
+        if (result.Retcode != 0)
+        {
+            throw new HoYoLabException(result.Retcode, result.Message);
+        }
+
+        return result;
+    }
+}
+
+public static class HoYoLabClientExtensions
+{
+    public static async Task<GenshinDailyInfo> GenshinDailyInfoAsync(
+        this IHoYoLabClient client,
+        CancellationToken cancellationToken = default)
+        => await client.SendAsync(
+               new GenshinDailyInfoRequest(),
+               JsonContext.DefaultContext.HoyoLabResultGenshinDailyInfo,
+               cancellationToken) ??
+           throw new HoYoLabException("Result data is null.");
+
+    public static async Task GenshinDailyCheckInAsync(
+        this IHoYoLabClient client,
+        CancellationToken cancellationToken = default) =>
+        await client.SendAsync(new GenshinDailyCheckInRequest(), cancellationToken);
+
+    public static async Task GenshinExchangeCdkeyAsync(
+        this IHoYoLabClient client,
+        string uid,
+        string cdkey,
+        string region = "os_asia",
+        CancellationToken cancellationToken = default) =>
+        await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+
+    public static async Task ZzzExchangeCdkeyAsync(
+        this IHoYoLabClient client,
+        string uid,
+        string cdkey,
+        string region = "prod_gf_jp",
+        CancellationToken cancellationToken = default) =>
+        await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+}
