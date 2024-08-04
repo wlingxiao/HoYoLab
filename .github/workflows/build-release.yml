@@ -1,0 +1,27 @@
+name: .NET
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deployment:
+
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+      - name: Add source
+        run: dotnet nuget add source --username USERNAME --password ${{ secrets.NUGET_TOKEN  }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ vars.NAMESPACE }}/index.json"
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Pack
+        run: dotnet pack "./src/HoYoLab/HoYoLab.csproj" --configuration Release -p:Version=${{ github.ref }}
+      - name: Publish
+        run: dotnet nuget push "./src/HoYoLab/bin/Release/HoYoLab.${{ github.ref }}.nupkg" --source "github"
