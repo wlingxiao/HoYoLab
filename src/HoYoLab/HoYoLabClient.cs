@@ -10,9 +10,9 @@ public interface IHoYoLabClient
 {
     Task SendAsync(IRequest request, CancellationToken cancellationToken = default);
 
-    Task<TResponse?> SendAsync<TResponse>(
+    Task<TResponse> SendAsync<TResponse>(
         IRequest<TResponse> request,
-        JsonTypeInfo<HoyoLabResult<TResponse>> jsonTypeInfo,
+        JsonTypeInfo<HoYoLabResult<TResponse>> jsonTypeInfo,
         CancellationToken cancellationToken = default);
 }
 
@@ -30,19 +30,20 @@ public class HoYoLabClient : IHoYoLabClient
     public async Task SendAsync(IRequest request, CancellationToken cancellationToken = default)
     {
         using var httpResp = await _httpClient.SendAsync(CreateRequest(request), cancellationToken);
-        CheckResult(await CheckResponse(httpResp).Content.ReadFromJsonAsync(
-            JsonContext.DefaultContext.HoyoLabResult,
-            cancellationToken));
+        CheckResult(await CheckResponse(httpResp)
+            .Content
+            .ReadFromJsonAsync(JsonContext.DefaultContext.HoYoLabResult, cancellationToken));
     }
 
-    public async Task<TResponse?> SendAsync<TResponse>(
+    public async Task<TResponse> SendAsync<TResponse>(
         IRequest<TResponse> request,
-        JsonTypeInfo<HoyoLabResult<TResponse>> jsonTypeInfo,
+        JsonTypeInfo<HoYoLabResult<TResponse>> jsonTypeInfo,
         CancellationToken cancellationToken = default)
     {
         using var httpResp = await _httpClient.SendAsync(CreateRequest(request), cancellationToken);
-        var result =
-            await CheckResponse(httpResp).Content.ReadFromJsonAsync(jsonTypeInfo, cancellationToken);
+        var result = await CheckResponse(httpResp)
+            .Content
+            .ReadFromJsonAsync(jsonTypeInfo, cancellationToken);
         return CheckResult(result).Data;
     }
 
@@ -68,7 +69,7 @@ public class HoYoLabClient : IHoYoLabClient
         return response;
     }
 
-    private static TResult CheckResult<TResult>(TResult? result) where TResult : HoyoLabResult
+    private static TResult CheckResult<TResult>(TResult? result) where TResult : HoYoLabResult
     {
         if (result is null)
         {
@@ -90,10 +91,9 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         CancellationToken cancellationToken = default)
         => await client.SendAsync(
-               new GenshinDailyInfoRequest(),
-               JsonContext.DefaultContext.HoyoLabResultGenshinDailyInfo,
-               cancellationToken) ??
-           throw new HoYoLabException("Result data is null.");
+            new GenshinDailyInfoRequest(),
+            JsonContext.DefaultContext.HoYoLabResultGenshinDailyInfo,
+            cancellationToken);
 
     public static async Task GenshinDailyCheckInAsync(
         this IHoYoLabClient client,
