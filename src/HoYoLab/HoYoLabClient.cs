@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization.Metadata;
 using HoYoLab.Requests;
 using HoYoLab.Results;
+using HoYoLab.Types;
 
 namespace HoYoLab;
 
@@ -106,7 +107,7 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         string uid,
         string cdkey,
-        GenshinRegion region = GenshinRegion.Asia,
+        Region region = Region.Asia,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
@@ -131,7 +132,7 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         string uid,
         string cdkey,
-        ZzzRegion region = ZzzRegion.Asia,
+        Region region = Region.Asia,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
@@ -156,7 +157,7 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         string uid,
         string cdkey,
-        HsrRegion region = HsrRegion.Asia,
+        Region region = Region.Asia,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new HsrExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
