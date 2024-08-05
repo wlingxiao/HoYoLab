@@ -131,7 +131,7 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         string uid,
         string cdkey,
-        string region = "prod_gf_jp",
+        ZzzRegion region = ZzzRegion.Asia,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
