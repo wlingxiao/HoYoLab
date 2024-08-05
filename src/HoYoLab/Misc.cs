@@ -25,8 +25,10 @@ public class HoYoLabException : Exception
     public string? Retmessage { get; }
 }
 
-[JsonSerializable(typeof(HoyoLabResult))]
-[JsonSerializable(typeof(HoyoLabResult<GenshinDailyInfo>))]
+[JsonSerializable(typeof(HoYoLabResult))]
+[JsonSerializable(typeof(HoYoLabResult<GenshinDailyInfo>))]
+[JsonSerializable(typeof(HoYoLabResult<HsrDailyInfo>))]
+[JsonSerializable(typeof(HoYoLabResult<ZzzDailyInfo>))]
 public partial class JsonContext : JsonSerializerContext
 {
     public static readonly JsonContext DefaultContext = new(new JsonSerializerOptions

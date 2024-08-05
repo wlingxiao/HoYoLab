@@ -10,9 +10,9 @@ public interface IHoYoLabClient
 {
     Task SendAsync(IRequest request, CancellationToken cancellationToken = default);
 
-    Task<TResponse?> SendAsync<TResponse>(
+    Task<TResponse> SendAsync<TResponse>(
         IRequest<TResponse> request,
-        JsonTypeInfo<HoyoLabResult<TResponse>> jsonTypeInfo,
+        JsonTypeInfo<HoYoLabResult<TResponse>> jsonTypeInfo,
         CancellationToken cancellationToken = default);
 }
 
@@ -30,19 +30,20 @@ public class HoYoLabClient : IHoYoLabClient
     public async Task SendAsync(IRequest request, CancellationToken cancellationToken = default)
     {
         using var httpResp = await _httpClient.SendAsync(CreateRequest(request), cancellationToken);
-        CheckResult(await CheckResponse(httpResp).Content.ReadFromJsonAsync(
-            JsonContext.DefaultContext.HoyoLabResult,
-            cancellationToken));
+        CheckResult(await CheckResponse(httpResp)
+            .Content
+            .ReadFromJsonAsync(JsonContext.DefaultContext.HoYoLabResult, cancellationToken));
     }
 
-    public async Task<TResponse?> SendAsync<TResponse>(
+    public async Task<TResponse> SendAsync<TResponse>(
         IRequest<TResponse> request,
-        JsonTypeInfo<HoyoLabResult<TResponse>> jsonTypeInfo,
+        JsonTypeInfo<HoYoLabResult<TResponse>> jsonTypeInfo,
         CancellationToken cancellationToken = default)
     {
         using var httpResp = await _httpClient.SendAsync(CreateRequest(request), cancellationToken);
-        var result =
-            await CheckResponse(httpResp).Content.ReadFromJsonAsync(jsonTypeInfo, cancellationToken);
+        var result = await CheckResponse(httpResp)
+            .Content
+            .ReadFromJsonAsync(jsonTypeInfo, cancellationToken);
         return CheckResult(result).Data;
     }
 
@@ -68,7 +69,7 @@ public class HoYoLabClient : IHoYoLabClient
         return response;
     }
 
-    private static TResult CheckResult<TResult>(TResult? result) where TResult : HoyoLabResult
+    private static TResult CheckResult<TResult>(TResult? result) where TResult : HoYoLabResult
     {
         if (result is null)
         {
@@ -86,14 +87,15 @@ public class HoYoLabClient : IHoYoLabClient
 
 public static class HoYoLabClientExtensions
 {
+    #region Genshin
+
     public static async Task<GenshinDailyInfo> GenshinDailyInfoAsync(
         this IHoYoLabClient client,
         CancellationToken cancellationToken = default)
         => await client.SendAsync(
-               new GenshinDailyInfoRequest(),
-               JsonContext.DefaultContext.HoyoLabResultGenshinDailyInfo,
-               cancellationToken) ??
-           throw new HoYoLabException("Result data is null.");
+            new GenshinDailyInfoRequest(),
+            JsonContext.DefaultContext.HoYoLabResultGenshinDailyInfo,
+            cancellationToken);
 
     public static async Task GenshinDailyCheckInAsync(
         this IHoYoLabClient client,
@@ -108,6 +110,23 @@ public static class HoYoLabClientExtensions
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
+    #endregion
+
+    #region Zzz
+
+    public static async Task<ZzzDailyInfo> ZzzDailyInfoAsync(
+        this IHoYoLabClient client,
+        CancellationToken cancellationToken = default)
+        => await client.SendAsync(
+            new ZzzDailyInfoRequest(),
+            JsonContext.DefaultContext.HoYoLabResultZzzDailyInfo,
+            cancellationToken);
+
+    public static async Task ZzzDailyCheckInAsync(
+        this IHoYoLabClient client,
+        CancellationToken cancellationToken = default) =>
+        await client.SendAsync(new ZzzDailyCheckInRequest(), cancellationToken);
+
     public static async Task ZzzExchangeCdkeyAsync(
         this IHoYoLabClient client,
         string uid,
@@ -115,4 +134,31 @@ public static class HoYoLabClientExtensions
         string region = "prod_gf_jp",
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+
+    #endregion
+
+    #region Hsr
+
+    public static async Task<HsrDailyInfo> HsrDailyInfoAsync(
+        this IHoYoLabClient client,
+        CancellationToken cancellationToken = default)
+        => await client.SendAsync(
+            new HsrDailyInfoRequest(),
+            JsonContext.DefaultContext.HoYoLabResultHsrDailyInfo,
+            cancellationToken);
+
+    public static async Task HsrDailyCheckInAsync(
+        this IHoYoLabClient client,
+        CancellationToken cancellationToken = default) =>
+        await client.SendAsync(new HsrDailyCheckInRequest(), cancellationToken);
+
+    public static async Task HsrExchangeCdkeyAsync(
+        this IHoYoLabClient client,
+        string uid,
+        string cdkey,
+        string region = "prod_official_asia",
+        CancellationToken cancellationToken = default) =>
+        await client.SendAsync(new HsrExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+
+    #endregion
 }

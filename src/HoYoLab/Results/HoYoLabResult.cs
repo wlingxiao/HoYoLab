@@ -1,12 +1,12 @@
 namespace HoYoLab.Results;
 
-public class HoyoLabResult
+public class HoYoLabResult
 {
     public required int Retcode { get; set; }
     public required string Message { get; set; }
 }
 
-public class HoyoLabResult<TData> : HoyoLabResult
+public class HoYoLabResult<TData> : HoYoLabResult
 {
     public required TData Data { get; set; }
 }
