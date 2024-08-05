@@ -108,8 +108,9 @@ public static class HoYoLabClientExtensions
         string uid,
         string cdkey,
         Region region = Region.Asia,
+        Language lang = Language.English,
         CancellationToken cancellationToken = default) =>
-        await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+        await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
 
     #endregion
 
@@ -133,8 +134,9 @@ public static class HoYoLabClientExtensions
         string uid,
         string cdkey,
         Region region = Region.Asia,
+        Language lang = Language.English,
         CancellationToken cancellationToken = default) =>
-        await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+        await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
 
     #endregion
 
@@ -158,8 +160,9 @@ public static class HoYoLabClientExtensions
         string uid,
         string cdkey,
         Region region = Region.Asia,
+        Language lang = Language.English,
         CancellationToken cancellationToken = default) =>
-        await client.SendAsync(new HsrExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
+        await client.SendAsync(new HsrExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
 
     #endregion
 }

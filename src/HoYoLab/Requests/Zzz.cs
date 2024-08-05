@@ -19,10 +19,10 @@ public class ZzzDailyCheckInRequest : IRequest
         new Uri("https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os/sign?act_id=e202406031448091");
 }
 
-public class ZzzExchangeCdkeyRequest(string uid, string cdkey, Region region) : IRequest
+public class ZzzExchangeCdkeyRequest(string uid, string cdkey, Region region, Language lang) : IRequest
 {
     public HttpMethod Method => HttpMethod.Get;
 
     public Uri RequestUri() => new Uri(
-        $"https://public-operation-nap.hoyoverse.com/common/apicdkey/api/webExchangeCdkey?t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}&lang=ja&game_biz=nap_global&uid={uid}&region={region.ToZzzRegion()}&cdkey={cdkey}");
+        $"https://public-operation-nap.hoyoverse.com/common/apicdkey/api/webExchangeCdkey?t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}&lang={lang.ToCode()}&game_biz=nap_global&uid={uid}&region={region.ToZzzRegion()}&cdkey={cdkey}");
 }
