@@ -156,7 +156,7 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         string uid,
         string cdkey,
-        string region = "prod_official_asia",
+        HsrRegion region = HsrRegion.Asia,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new HsrExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
