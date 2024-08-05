@@ -9,8 +9,16 @@ public class GenshinTests
     {
         var client = CreateHttpClient(""" {"data":null,"message":"Not logged in","retcode":-100} """);
         var error = await Assert.ThrowsAsync<HoYoLabException>(async () => { await client.GenshinDailyInfoAsync(); });
-        Assert.Equal(-100, error.Retcode);
+        Assert.True(error.IsNotLoggedIn);
         Assert.Equal("Not logged in", error.Retmessage);
+    }
+
+    [Fact]
+    public async Task Test_AlreadyCheckedIn()
+    {
+        var client = CreateHttpClient(""" {"data":null,"message":"You've already checked in","retcode":-5003} """);
+        var error = await Assert.ThrowsAsync<HoYoLabException>(async () => { await client.GenshinDailyInfoAsync(); });
+        Assert.True(error.IsAlreadyCheckedIn);
     }
 
     [Fact]

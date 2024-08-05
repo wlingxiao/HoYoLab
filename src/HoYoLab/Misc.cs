@@ -23,6 +23,9 @@ public class HoYoLabException : Exception
 
     public int? Retcode { get; }
     public string? Retmessage { get; }
+
+    public bool IsNotLoggedIn => Retcode is -100;
+    public bool IsAlreadyCheckedIn => Retcode is -5003;
 }
 
 [JsonSerializable(typeof(HoYoLabResult))]
