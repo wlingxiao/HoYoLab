@@ -106,7 +106,7 @@ public static class HoYoLabClientExtensions
         this IHoYoLabClient client,
         string uid,
         string cdkey,
-        string region = "os_asia",
+        GenshinRegion region = GenshinRegion.Asia,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region), cancellationToken);
 
