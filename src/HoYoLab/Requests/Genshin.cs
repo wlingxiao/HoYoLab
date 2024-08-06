@@ -23,7 +23,7 @@ public class GenshinExchangeCdkeyRequest(string uid, string cdkey, Region region
         $"https://sg-hk4e-api.hoyoverse.com/common/apicdkey/api/webExchangeCdkey?uid={uid}&region={region.ToGenshinRegion()}&lang={lang.ToCode()}&cdkey={cdkey}&game_biz=hk4e_global&sLangKey=en-us");
 }
 
-public class GenshinUserGameRoleRequest(Region region, Language lang) : IRequest<GenshinUserGameRoleHolder>
+public class GenshinUserGameRoleRequest(Region region, Language lang) : IRequest<UserGameRoleList>
 {
     public HttpMethod Method { get; } = HttpMethod.Get;
 

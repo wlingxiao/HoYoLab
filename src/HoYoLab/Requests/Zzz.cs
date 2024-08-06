@@ -26,3 +26,12 @@ public class ZzzExchangeCdkeyRequest(string uid, string cdkey, Region region, La
     public Uri RequestUri() => new Uri(
         $"https://public-operation-nap.hoyoverse.com/common/apicdkey/api/webExchangeCdkey?t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}&lang={lang.ToCode()}&game_biz=nap_global&uid={uid}&region={region.ToZzzRegion()}&cdkey={cdkey}");
 }
+
+public class ZzzUserGameRoleRequest(Region region, Language lang) : IRequest<UserGameRoleList>
+{
+    public HttpMethod Method { get; } = HttpMethod.Get;
+
+    public Uri RequestUri() =>
+        new Uri(
+            $"https://api-account-os.hoyoverse.com/account/binding/api/getUserGameRolesOfRegionByCookieToken?t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}&game_biz=nap_global&region={region.ToZzzRegion()}&lang={lang.ToCode()}");
+}
