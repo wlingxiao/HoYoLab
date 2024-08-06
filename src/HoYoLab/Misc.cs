@@ -32,6 +32,7 @@ public class HoYoLabException : Exception
 [JsonSerializable(typeof(HoYoLabResult<GenshinDailyInfo>))]
 [JsonSerializable(typeof(HoYoLabResult<HsrDailyInfo>))]
 [JsonSerializable(typeof(HoYoLabResult<ZzzDailyInfo>))]
+[JsonSerializable(typeof(HoYoLabResult<GenshinUserGameRoleHolder>))]
 public partial class JsonContext : JsonSerializerContext
 {
     public static readonly JsonContext DefaultContext = new(new JsonSerializerOptions

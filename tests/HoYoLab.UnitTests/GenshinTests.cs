@@ -52,4 +52,21 @@ public class GenshinTests
         await client.GenshinDailyCheckInAsync();
         Assert.True(true);
     }
+
+    [Fact]
+    public async Task Test_GenshinUserGameRoles()
+    {
+        var client =
+            CreateHttpClient(
+                """ {"retcode":0,"message":"OK","data":{"list":[{"game_biz":"hk4e_global","region":"os_asia","game_uid":"123","nickname":"🐇","level":10,"is_chosen":false,"region_name":"Asia Server","is_official":true}]}} """);
+        var userGameRole = (await client.GenshinUserGameRolesAsync()).First();
+        Assert.Equal("hk4e_global", userGameRole.GameBiz);
+        Assert.Equal("os_asia", userGameRole.Region);
+        Assert.Equal("123", userGameRole.GameUid);
+        Assert.Equal("🐇", userGameRole.Nickname);
+        Assert.Equal(10, userGameRole.Level);
+        Assert.False(userGameRole.IsChosen);
+        Assert.Equal("Asia Server", userGameRole.RegionName);
+        Assert.True(userGameRole.IsOfficial);
+    }
 }
