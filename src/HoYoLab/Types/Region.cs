@@ -36,4 +36,17 @@ public static class RegionExtensions
         Region.TwHkMo => "prod_gf_sg",
         _ => throw new IndexOutOfRangeException(nameof(region))
     };
+
+    public static Region ToRegion(this string region)
+    {
+        foreach (var r in Enum.GetValues<Region>())
+        {
+            if (region == r.ToGenshinRegion() || region == r.ToHsrRegion() || region == r.ToZzzRegion())
+            {
+                return r;
+            }
+        }
+
+        throw new ArgumentException($"Unknown region: {region}", nameof(region));
+    }
 }
