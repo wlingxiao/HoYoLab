@@ -112,6 +112,17 @@ public static class HoYoLabClientExtensions
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
 
+    public static async Task<List<GenshinUserGameRole>> GenshinUserGameRolesAsync(
+        this IHoYoLabClient client,
+        Region region = Region.Asia,
+        Language lang = Language.English,
+        CancellationToken cancellationToken = default)
+        => (await client.SendAsync(
+                new GenshinUserGameRoleRequest(region, lang),
+                JsonContext.DefaultContext.HoYoLabResultGenshinUserGameRoleHolder,
+                cancellationToken))
+            .List;
+
     #endregion
 
     #region Zzz
