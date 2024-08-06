@@ -83,4 +83,11 @@ public class GenshinTests
             Assert.True(userGameRole.IsOfficial);
         }
     }
+
+    [Fact]
+    public void Test_ToRegion()
+    {
+        Assert.Throws<ArgumentException>(() => "a".ToRegion());
+        Assert.Equal(Region.Asia, "os_asia".ToRegion());
+    }
 }
