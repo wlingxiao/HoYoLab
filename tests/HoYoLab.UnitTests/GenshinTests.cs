@@ -1,3 +1,5 @@
+using HoYoLab.Types;
+
 namespace HoYoLab.UnitTests;
 
 using static HoYoLab.UnitTests.Helper;
@@ -54,19 +56,31 @@ public class GenshinTests
     }
 
     [Fact]
-    public async Task Test_GenshinUserGameRoles()
+    public async Task Test_UserGameRoles()
     {
         var client =
             CreateHttpClient(
                 """ {"retcode":0,"message":"OK","data":{"list":[{"game_biz":"hk4e_global","region":"os_asia","game_uid":"123","nickname":"🐇","level":10,"is_chosen":false,"region_name":"Asia Server","is_official":true}]}} """);
         var userGameRole = (await client.GenshinUserGameRolesAsync()).First();
-        Assert.Equal("hk4e_global", userGameRole.GameBiz);
-        Assert.Equal("os_asia", userGameRole.Region);
-        Assert.Equal("123", userGameRole.GameUid);
-        Assert.Equal("🐇", userGameRole.Nickname);
-        Assert.Equal(10, userGameRole.Level);
-        Assert.False(userGameRole.IsChosen);
-        Assert.Equal("Asia Server", userGameRole.RegionName);
-        Assert.True(userGameRole.IsOfficial);
+        AssertUserGameRole(userGameRole);
+
+        userGameRole = (await client.HsrUserGameRolesAsync()).First();
+        AssertUserGameRole(userGameRole);
+
+        userGameRole = (await client.ZzzUserGameRolesAsync()).First();
+        AssertUserGameRole(userGameRole);
+        return;
+
+        static void AssertUserGameRole(UserGameRole userGameRole)
+        {
+            Assert.Equal("hk4e_global", userGameRole.GameBiz);
+            Assert.Equal("os_asia", userGameRole.Region);
+            Assert.Equal("123", userGameRole.GameUid);
+            Assert.Equal("🐇", userGameRole.Nickname);
+            Assert.Equal(10, userGameRole.Level);
+            Assert.False(userGameRole.IsChosen);
+            Assert.Equal("Asia Server", userGameRole.RegionName);
+            Assert.True(userGameRole.IsOfficial);
+        }
     }
 }

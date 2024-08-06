@@ -112,14 +112,14 @@ public static class HoYoLabClientExtensions
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new GenshinExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
 
-    public static async Task<List<GenshinUserGameRole>> GenshinUserGameRolesAsync(
+    public static async Task<List<UserGameRole>> GenshinUserGameRolesAsync(
         this IHoYoLabClient client,
         Region region = Region.Asia,
         Language lang = Language.English,
         CancellationToken cancellationToken = default)
         => (await client.SendAsync(
                 new GenshinUserGameRoleRequest(region, lang),
-                JsonContext.DefaultContext.HoYoLabResultGenshinUserGameRoleHolder,
+                JsonContext.DefaultContext.HoYoLabResultUserGameRoleList,
                 cancellationToken))
             .List;
 
@@ -149,6 +149,17 @@ public static class HoYoLabClientExtensions
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new ZzzExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
 
+    public static async Task<List<UserGameRole>> ZzzUserGameRolesAsync(
+        this IHoYoLabClient client,
+        Region region = Region.Asia,
+        Language lang = Language.English,
+        CancellationToken cancellationToken = default)
+        => (await client.SendAsync(
+                new ZzzUserGameRoleRequest(region, lang),
+                JsonContext.DefaultContext.HoYoLabResultUserGameRoleList,
+                cancellationToken))
+            .List;
+
     #endregion
 
     #region Hsr
@@ -174,6 +185,17 @@ public static class HoYoLabClientExtensions
         Language lang = Language.English,
         CancellationToken cancellationToken = default) =>
         await client.SendAsync(new HsrExchangeCdkeyRequest(uid, cdkey, region, lang), cancellationToken);
+
+    public static async Task<List<UserGameRole>> HsrUserGameRolesAsync(
+        this IHoYoLabClient client,
+        Region region = Region.Asia,
+        Language lang = Language.English,
+        CancellationToken cancellationToken = default)
+        => (await client.SendAsync(
+                new HsrUserGameRoleRequest(region, lang),
+                JsonContext.DefaultContext.HoYoLabResultUserGameRoleList,
+                cancellationToken))
+            .List;
 
     #endregion
 }

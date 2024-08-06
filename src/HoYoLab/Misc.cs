@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using HoYoLab.Results;
+using HoYoLab.Types;
 
 namespace HoYoLab;
 
@@ -32,7 +33,7 @@ public class HoYoLabException : Exception
 [JsonSerializable(typeof(HoYoLabResult<GenshinDailyInfo>))]
 [JsonSerializable(typeof(HoYoLabResult<HsrDailyInfo>))]
 [JsonSerializable(typeof(HoYoLabResult<ZzzDailyInfo>))]
-[JsonSerializable(typeof(HoYoLabResult<GenshinUserGameRoleHolder>))]
+[JsonSerializable(typeof(HoYoLabResult<UserGameRoleList>))]
 public partial class JsonContext : JsonSerializerContext
 {
     public static readonly JsonContext DefaultContext = new(new JsonSerializerOptions
