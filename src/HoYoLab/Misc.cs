@@ -5,9 +5,9 @@ using HoYoLab.Types;
 
 namespace HoYoLab;
 
-public class HoYoLabClientOptions(string cookie)
+public class HoYoLabClientOptions(string? cookie)
 {
-    public string Cookie { get; } = cookie;
+    public string? Cookie { get; } = cookie;
 }
 
 public class HoYoLabException : Exception

@@ -55,7 +55,11 @@ public class HoYoLabClient : IHoYoLabClient
             RequestUri = request.RequestUri(),
             Method = request.Method
         };
-        httpReq.Headers.Add("Cookie", _options.Cookie);
+        if (string.IsNullOrWhiteSpace(_options.Cookie))
+        {
+            httpReq.Headers.Add("Cookie", _options.Cookie);
+        }
+
         return httpReq;
     }
 
