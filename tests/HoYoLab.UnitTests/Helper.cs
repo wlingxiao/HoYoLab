@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Net;
 
 namespace HoYoLab.UnitTests;
@@ -10,6 +11,14 @@ internal static class Helper
         var options = new HoYoLabClientOptions("cookie");
         var client = new HoYoLabClient(options, httpClient);
         return client;
+    }
+
+    public static HttpClient CreateHttpClientFromGZipFile(string path)
+    {
+        using var fs = File.OpenRead(path);
+        using var gz = new GZipStream(fs, CompressionMode.Decompress);
+        using var reader = new StreamReader(gz);
+        return new HttpClient(new MockHttpMessageHandler(reader.ReadToEnd()));
     }
 }
 

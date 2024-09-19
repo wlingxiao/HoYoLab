@@ -14,10 +14,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\HoYoLab\HoYoLab.csproj" />
+    <ProjectReference Include="..\..\src\HoYoLab.RedeemCode\HoYoLab.RedeemCode.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
