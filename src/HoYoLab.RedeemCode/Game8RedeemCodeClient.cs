@@ -118,7 +118,7 @@ public class Game8RedeemCodeClient(HttpClient httpClient) : IRedeemCodeClient
     }
 
     private static string? ParsePageDescription(IHtmlDocument html, string path) =>
-        html.Body?.SelectSingleNode(path).TextContent.Trim();
+        html.Body?.SelectSingleNode(path)?.TextContent.Trim();
 
     private static List<RedeemCode> ParseCodes(IHtmlDocument html, string path)
     {
