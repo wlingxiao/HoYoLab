@@ -8,7 +8,8 @@ public interface IRedeemCodeClient
 public record CodeData(
     LatestCodeData LatestCodes,
     LivestreamCodeData LivestreamCodes,
-    string? Description);
+    string? Description,
+    string? LastUpdatedOn);
 
 public record LatestCodeData(List<RedeemCode> GlobalExclusive);
 

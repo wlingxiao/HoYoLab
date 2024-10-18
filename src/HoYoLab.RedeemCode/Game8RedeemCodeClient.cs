@@ -50,7 +50,8 @@ public class Game8RedeemCodeClient(HttpClient httpClient) : IRedeemCodeClient
         var global = ParseCodes(doc, "//h4[text()='Global-Exclusive Codes']/following-sibling::ol[1]/li");
         var cn = ParseCodes(doc, "//h4[text()='CN-Exclusive Codes']/following-sibling::ol[1]/li");
         var description = ParsePageDescription(doc, "//h3[contains(text(), 'Latest Redeem Codes in')]");
-        return new CodeData(new LatestCodeData(latest), new LivestreamCodeData(global, cn), description);
+        var lastUpdatedOn = ParseLastUpdatedOn(doc);
+        return new CodeData(new LatestCodeData(latest), new LivestreamCodeData(global, cn), description, lastUpdatedOn);
     }
 
     internal async Task<CodeData> GetHsrCodesFromCodesPage(
@@ -64,7 +65,8 @@ public class Game8RedeemCodeClient(HttpClient httpClient) : IRedeemCodeClient
             "//h3[contains(text(), 'New Redeem Codes in Version')]/following-sibling::ul[1]/li");
         var global = ParseCodes(doc, "//h3[text()='EN Livestream Codes']/following-sibling::ol[1]/li");
         var description = ParsePageDescription(doc, "//h3[contains(text(), 'New Redeem Codes in Version')]");
-        return new CodeData(new LatestCodeData(latest), new LivestreamCodeData(global, []), Description: description);
+        return new CodeData(new LatestCodeData(latest), new LivestreamCodeData(global, []), Description: description,
+            LastUpdatedOn: ParseLastUpdatedOn(doc));
     }
 
     internal async Task<CodeData> GetZzzCodesFromCodesPage(
@@ -77,7 +79,8 @@ public class Game8RedeemCodeClient(HttpClient httpClient) : IRedeemCodeClient
         var latest = ParseCodes(doc, "//h3[contains(text(), 'All Codes for')]/following-sibling::ul[1]/li");
         var global = ParseCodes(doc, "//h3[contains(text(), 'Livestream Codes')]/following-sibling::ul[1]/li");
         var description = ParsePageDescription(doc, "//h1[contains(text(), 'All Redeem Codes in')]");
-        return new CodeData(new LatestCodeData(latest), new LivestreamCodeData(global, []), description);
+        return new CodeData(new LatestCodeData(latest), new LivestreamCodeData(global, []), Description: description,
+            LastUpdatedOn: ParseLastUpdatedOn(doc));
     }
 
     internal Task<string?> GetGenshinCodesPageUrl(CancellationToken cancellationToken = default)
@@ -138,5 +141,11 @@ public class Game8RedeemCodeClient(HttpClient httpClient) : IRedeemCodeClient
         }
 
         return codes;
+    }
+
+    private static string? ParseLastUpdatedOn(IHtmlDocument doc)
+    {
+        var timeEle = doc.Body?.SelectSingleNode("//time[contains(text(), 'Last updated on:')]");
+        return timeEle is not IElement ele ? null : ele.GetAttribute("datetime");
     }
 }

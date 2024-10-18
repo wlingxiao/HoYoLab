@@ -13,6 +13,7 @@ public class Game8RedeemCodeClientTests
             "https://game8.co/games/Genshin-Impact/archives/304759");
 
         Assert.Equal("Latest Redeem Codes in Version 5.0", codeData.Description);
+        Assert.Equal("2024-09-14T00:57:35-04:00", codeData.LastUpdatedOn);
 
         Assert.Equal("DT4BZD5RT5U9", codeData.LatestCodes.GlobalExclusive[0].Code);
         Assert.Null(codeData.LatestCodes.GlobalExclusive[0].Expired);
@@ -39,6 +40,7 @@ public class Game8RedeemCodeClientTests
             "https://game8.co/games/Honkai-Star-Rail/archives/410296");
 
         Assert.Equal("New Redeem Codes in Version 2.5", codeData.Description);
+        Assert.Equal("2024-09-17T00:13:12-04:00", codeData.LastUpdatedOn);
         Assert.Equal("BKWHQ9B3G7T1M", codeData.LatestCodes.GlobalExclusive[0].Code);
         Assert.Null(codeData.LatestCodes.GlobalExclusive[0].Expired);
         Assert.Equal("BKWHQ9B3G7T1M (Traveler's Guide x3, Immortal's Delight x3, Credit x20,000)",
@@ -59,6 +61,7 @@ public class Game8RedeemCodeClientTests
             "https://game8.co/games/Zenless-Zone-Zero/archives/435683");
 
         Assert.Equal("All Redeem Codes in September 2024", codeData.Description);
+        Assert.Equal("2024-09-18T22:32:30-04:00", codeData.LastUpdatedOn);
         Assert.Equal("ZENLESSGIFT", codeData.LatestCodes.GlobalExclusive[0].Code);
         Assert.Null(codeData.LatestCodes.GlobalExclusive[0].Expired);
         Assert.Equal(
@@ -67,7 +70,9 @@ public class Game8RedeemCodeClientTests
 
         Assert.Equal("TOURDEINFERNO", codeData.LivestreamCodes.GlobalExclusive[0].Code);
         Assert.Null(codeData.LivestreamCodes.GlobalExclusive[0].Expired);
-        Assert.Equal("TOURDEINFERNO - Polychrome x300,Senior Investigator Log x2, W-Engine Energy Module x3, Denny x30,000", codeData.LivestreamCodes.GlobalExclusive[0].Description);
+        Assert.Equal(
+            "TOURDEINFERNO - Polychrome x300,Senior Investigator Log x2, W-Engine Energy Module x3, Denny x30,000",
+            codeData.LivestreamCodes.GlobalExclusive[0].Description);
     }
 
     [Fact]
