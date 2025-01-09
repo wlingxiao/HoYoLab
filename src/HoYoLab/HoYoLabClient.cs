@@ -50,11 +50,7 @@ public class HoYoLabClient : IHoYoLabClient
 
     private HttpRequestMessage CreateRequest(IRequest request)
     {
-        var httpReq = new HttpRequestMessage
-        {
-            RequestUri = request.RequestUri(),
-            Method = request.Method
-        };
+        var httpReq = request.Request();
         if (!string.IsNullOrWhiteSpace(_options.Cookie))
         {
             httpReq.Headers.Add("Cookie", _options.Cookie);
