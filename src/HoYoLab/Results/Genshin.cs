@@ -1,6 +1,6 @@
 namespace HoYoLab.Results;
 
-public class GenshinDailyInfo
+public class GenshinDailyInfo : IDailyInfo
 {
     public required string Today { get; set; }
 

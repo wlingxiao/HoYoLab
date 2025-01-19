@@ -1,6 +1,6 @@
 namespace HoYoLab.Results;
 
-public class ZzzDailyInfo
+public class ZzzDailyInfo : IDailyInfo
 {
     public required string Today { get; set; }
 

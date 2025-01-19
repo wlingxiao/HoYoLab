@@ -1,6 +1,6 @@
 namespace HoYoLab.Results;
 
-public class HsrDailyInfo
+public class HsrDailyInfo : IDailyInfo
 {
     public required string Today { get; set; }
 
