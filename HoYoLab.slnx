@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="src/HoYoLab/HoYoLab.csproj" />
-  <Project Path="tests/HoYoLab.UnitTests/HoYoLab.UnitTests.csproj" />
+  <Project Path="HoYoLab/HoYoLab.csproj" />
+  <Project Path="HoYoLab.UnitTests/HoYoLab.UnitTests.csproj" />
   <Project Path="Sample/Sample.csproj" />
 </Solution>
